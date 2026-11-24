@@ -106,12 +106,12 @@ flowchart LR
 
 The allocations below follow the supplied concept image. Each member owns implementation evidence and the corresponding report explanation; integration and final review are shared.
 
-| Member | Lead responsibility | Expected deliverables | Review partner |
-| --- | --- | --- | --- |
-| **1 — Bhagya** | Data and problem formulation | Dataset audit, preprocessing, features, labels, split manifest, formal TSP definition | Zaid |
-| **2 — Zaid** | MLP model implementation | Modular network, activations, forward/backward propagation, loss, decoding integration, mathematical explanation | Monishan |
-| **3 — Monishan** | Optimizer implementation | Five optimizers, update equations, controlled training runner, configurations, checkpoints and logs | Sathish |
-| **4 — Sathish** | Evaluation, analysis and reporting | Metrics, comparative charts, route evaluation, complexity synthesis, integrated report and screenshot evidence | Bhagya |
+| Member | Lead responsibility | Expected deliverables |
+| --- | --- | --- |
+| **1 — Bhagya** | Data and problem formulation | Dataset audit, preprocessing, features, labels, split manifest, formal TSP definition |
+| **2 — Zaid** | MLP model implementation | Modular network, activations, forward/backward propagation, loss, decoding integration, mathematical explanation |
+| **3 — Monishan** | Optimizer implementation | Five optimizers, update equations, controlled training runner, configurations, checkpoints and logs |
+| **4 — Sathish** | Evaluation, analysis and reporting | Metrics, comparative charts, route evaluation, complexity synthesis, integrated report and screenshot evidence |
 
 ### Member 1 — Bhagya
 
