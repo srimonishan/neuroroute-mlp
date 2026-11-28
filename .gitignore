@@ -1,0 +1,21 @@
+# Byte-compiled / Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Generated processed datasets & local artifacts
+data/processed/*.npz
+outputs/
+*.log
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
