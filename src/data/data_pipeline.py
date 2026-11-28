@@ -19,7 +19,7 @@ SEED = 42
 
 def load_distance_matrix(path=CSV_PATH):
     """Read the CSV file and return a 100x100 numpy distance matrix."""
-    df = pd.read_csv(path, index_col=0)
+    df = pd.read_csv(path, sep=None, engine="python", index_col=0)
     return df.values.astype(float)
 
 
