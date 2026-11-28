@@ -6,7 +6,7 @@
 
 NeuroRoute is a planned intelligent routing system for the Travelling Salesperson Problem (TSP). It will use a Multilayer Perceptron (MLP) decision block and compare **SGD, SGD with Momentum, Adam, RMSprop, and AdaGrad** under controlled training conditions. The project connects classification performance with route quality, convergence, execution time, and algorithmic complexity.
 
-> **Current status: planning and requirements documented.** No dataset, implementation, experiments, or measured results have been added to this repository. Unchecked items represent outstanding work, not completed features. A learned route is not guaranteed to be globally optimal.
+> **Current status: Member 1 (data pipeline) and Member 2 (MLP model, route decoder, unit tests, and architecture/complexity notes) are implemented.** Member 3 (five optimizers & controlled training runner) and Member 4 (comparative experiments, plots, and final PDF report) remain in progress. Unchecked items represent outstanding or unreviewed work. A learned route is not guaranteed to be globally optimal.
 
 | Project detail | Value |
 | --- | --- |
@@ -43,14 +43,14 @@ This plan uses the supplied **PUSL2099 Coursework Guidelines (Provisional)(1).pd
 
 ### Coursework requirements
 
-- [ ] **[Required]** Implement an MLP classification network with an input layer matching the features, at least one nonlinear hidden layer, and an output layer for route decisions.
-- [ ] **[Required]** Implement forward propagation and loss calculation, with a functioning training pipeline.
+- [x] **[Required]** Implement an MLP classification network with an input layer matching the features, at least one nonlinear hidden layer, and an output layer for route decisions (`src/models/mlp.py`, `src/models/layers.py`, `src/models/activations.py`).
+- [ ] **[Required]** Implement forward propagation and loss calculation, with a functioning training pipeline (`src/models/losses.py` and `MLP.forward`/`backward` implemented; multi-optimizer training runner pending Member 3).
 - [ ] **[Required]** Implement or configure all five optimizers: SGD, Momentum SGD, Adam, RMSprop, and AdaGrad.
 - [ ] **[Required]** Compare optimizers using identical epoch counts, batch sizes, and initial weights.
 - [ ] **[Required]** Record classification success rate, loss across epochs, and training time per epoch.
 - [ ] **[Required]** Produce combined success-rate-versus-epochs and loss-versus-epochs charts.
-- [ ] **[Required]** Explain the MLP mathematically, including loss and feature preprocessing.
-- [ ] **[Required]** Analyze forward-pass, backward-pass, and optimizer-update complexity.
+- [x] **[Required]** Explain the MLP mathematically, including loss and feature preprocessing (`data/README.md`, `docs/member2_mlp_architecture.md`).
+- [ ] **[Required]** Analyze forward-pass, backward-pass, and optimizer-update complexity (forward/backward/decoding in `docs/member2_mlp_architecture.md`; per-optimizer update complexity pending Member 3).
 - [ ] **[Required]** Submit source code and an academic PDF report, including the required appendices.
 
 The rubric's highest band emphasizes modular code, comprehensive benchmarking, and deep critical evaluation of convergence and trade-offs. It explicitly states that higher MLP accuracy does not automatically earn higher marks. This checklist supports that standard; it cannot guarantee a particular grade.
@@ -125,12 +125,12 @@ The allocations below follow the supplied concept image. Each member owns implem
 
 ### Member 2 — Zaid
 
-- [ ] Define input/output dimensions, hidden layers, activations, and initialization.
-- [ ] Implement forward propagation, numerically stable classification loss, and backpropagation.
-- [ ] Expose a consistent parameter/gradient interface for all optimizers.
-- [ ] Implement route decoding with Bhagya and validate visit/return constraints.
-- [ ] Check tensor shapes and gradients; demonstrate learning on a small controlled example.
-- [ ] Write the MLP mathematical model and forward/backward complexity derivations.
+- [x] Define input/output dimensions, hidden layers, activations, and initialization (`src/models/mlp.py`, `src/models/layers.py`, `src/models/activations.py`; commits `db5f086`, `796376c`, `1465580`; awaiting teammate review).
+- [x] Implement forward propagation, numerically stable classification loss, and backpropagation (`src/models/losses.py`, `src/models/mlp.py`; commits `1d9e810`, `1465580`; awaiting teammate review).
+- [x] Expose a consistent parameter/gradient interface for all optimizers (`named_parameters`, `parameters`, `zero_grad`, `get_weights`, `set_weights`, `save_weights`, `load_weights` in `src/models/mlp.py`).
+- [x] Implement route decoding with Bhagya and validate visit/return constraints (`src/routing/decoder.py`; commit `cb11075`; awaiting teammate review).
+- [x] Check tensor shapes and gradients; demonstrate learning on a small controlled example (`tests/test_mlp.py` — 10/10 passing; commit `253d999`).
+- [x] Write the MLP mathematical model and forward/backward complexity derivations (`docs/member2_mlp_architecture.md`; commit `75e93b0`; awaiting teammate review).
 
 ### Member 3 — Monishan
 
@@ -166,16 +166,16 @@ The allocations below follow the supplied concept image. Each member owns implem
 - [ ] **[Recommended]** Store original data separately from generated/processed data and record provenance and permitted use.
 - [ ] **[Recommended]** Validate dimensions, finite values, city indexing, and cost-matrix assumptions.
 - [ ] **[Recommended]** Version generation seeds, feature definitions, normalization parameters, and labels.
-- [ ] **[Recommended]** Verify route length includes the final return edge.
-- [ ] **[Recommended]** Check every output visits each city once, returns to the start, and uses valid edges.
+- [x] **[Recommended]** Verify route length includes the final return edge (`tour_length` in `src/routing/decoder.py`, tested in `tests/test_mlp.py`).
+- [x] **[Recommended]** Check every output visits each city once, returns to the start, and uses valid edges (`validate_tour` and `decode_tour` in `src/routing/decoder.py`).
 - [ ] **[Recommended]** Handle repeated coordinates, tied decisions, and the documented minimum supported city count.
 
 ### MLP and optimizer correctness
 
-- [ ] **[Required]** Complete input, nonlinear hidden, and classification output layers.
-- [ ] **[Required]** Explain and implement forward computation and the selected loss.
-- [ ] **[Recommended]** Use stable softmax/cross-entropy for the proposed multiclass next-city target.
-- [ ] **[Recommended]** Compare analytic gradients with finite differences on a small network.
+- [x] **[Required]** Complete input, nonlinear hidden, and classification output layers (`src/models/`).
+- [x] **[Required]** Explain and implement forward computation and the selected loss (`src/models/losses.py`, `docs/member2_mlp_architecture.md`).
+- [x] **[Recommended]** Use stable softmax/cross-entropy for the proposed multiclass next-city target (`SoftmaxCrossEntropyLoss` in `src/models/losses.py`).
+- [x] **[Recommended]** Compare analytic gradients with finite differences on a small network (`tests/test_mlp.py`).
 - [ ] **[Recommended]** Check optimizer update direction, accumulated state, and Adam bias correction.
 - [ ] **[Recommended]** Verify training and evaluation modes, batch aggregation, and checkpoint restoration.
 - [ ] **[Recommended]** Keep data preparation, model, optimizers, training, decoding, and evaluation modular.
@@ -303,10 +303,16 @@ neuroroute-mlp/
 
 ## Reproducibility and results
 
-**Run instructions are pending implementation.** No executable entry points or dependency manifest exist yet; do not treat the planned layout as runnable software.
+**Environment validated for data preparation, MLP unit tests, and tour decoding:** Windows, Python 3.14.8, `numpy==2.5.3`, `pandas==3.0.6`, `matplotlib==3.11.2` (`requirements.txt`). Multi-optimizer training and benchmark commands are pending Member 3 and Member 4.
 
-- [ ] Record the tested Python version, operating system, hardware, and dependency versions.
-- [ ] Add exact installation and data-preparation commands after validating them.
+```bash
+pip install -r requirements.txt
+python src/data/data_pipeline.py
+python -m unittest discover -s tests -v
+```
+
+- [x] Record the tested Python version, operating system, hardware, and dependency versions (Python 3.14.8 on Windows; pinned in `requirements.txt`).
+- [x] Add exact installation and data-preparation commands after validating them (verified `data_pipeline.py` and `unittest`).
 - [ ] Add commands to train each optimizer and reproduce the complete comparison.
 - [ ] Add commands to evaluate held-out instances, decode tours, and regenerate figures/tables.
 - [ ] Document seeds, saved configurations, checkpoint policy, and output locations.
